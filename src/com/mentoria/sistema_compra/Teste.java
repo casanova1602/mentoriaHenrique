@@ -52,6 +52,7 @@ public class Teste {
 				}
 
 				while (comando != 5) {
+					System.out.println("\n***********************************************************************");
 					System.out.println("O que gostaria de fazer?\n 1 - Localizar Produto \n 2 - Adicionar Produto \n"
 							+ " 3 - Remover Produto \n 4 - Visualizar Carrinho de Compras \n 5 - Sair do Usuário \n 6 - Encerrar Sistema");
 					scr.nextLine();
@@ -60,7 +61,9 @@ public class Teste {
 					case 1:
 						System.out.println("Digite o nome do produto");
 						String localizaNome = scr.next().toLowerCase();
-						estoque.localizaProduto(localizaNome);
+						if(!estoque.localizaProduto(localizaNome)) {
+							System.out.println("Produto Não Localizado!");
+						};
 						break;
 					case 2:
 						System.out.println("Digite o produto que gostaria de adicionar: ");

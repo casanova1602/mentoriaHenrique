@@ -4,12 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarrinhoCompras {
-	
+
 	Estoque estoque = Teste.getEstoque();
-	
+
 	private List<Produto> carrinhoUsuario = new ArrayList();
 
 	public boolean addCarrinho(String produto, int quantidade) {
+		for (Produto produtoCarrinho : this.carrinhoUsuario) {
+			if (produtoCarrinho.nome.equals(produto)) {
+				if (estoque.removeQuantidade(new Produto(produto, produtoCarrinho.preco, quantidade))) {
+					produtoCarrinho.quantidade += quantidade;
+					return true;
+				}
+			}
+		}
 		for (Produto produtos : estoque.dbProdutos.getProdutos()) {
 			if (produtos.nome.equals(produto)) {
 				if (estoque.removeQuantidade(new Produto(produto, produtos.preco, quantidade))) {
@@ -22,14 +30,13 @@ public class CarrinhoCompras {
 		return false;
 	}
 
-	public void removeCarrinho(String produto, int quantidade) {
-		int quantCarrinho = 0;
+	public boolean removeCarrinho(String produto, int quantidade) {
 		for (Produto produtoCarrinho : this.carrinhoUsuario) {
 			if (produtoCarrinho.nome.equals(produto)) {
-				quantCarrinho = produtoCarrinho.quantidade;
-
+				int quantCarrinho = produtoCarrinho.quantidade;
 				if (quantCarrinho < quantidade) {
 					System.out.println("Quantidade Insuficiente no Carrinho");
+					return false;
 				} else {
 					for (Produto produtos : estoque.dbProdutos.getProdutos()) {
 						if (produtos.nome.equals(produto)) {
@@ -38,26 +45,28 @@ public class CarrinhoCompras {
 							} else {
 								produtoCarrinho.quantidade -= quantidade;
 							}
-							;
 							estoque.addQuantidade(new Produto(produto, produtos.preco, quantidade));
+							return true;
+
 						}
 					}
 				}
 			}
 		}
-
+		return false;
 	}
 
 	public void visualizarCarrinho() {
 		if (this.carrinhoUsuario.size() == 0) {
 			System.out.println("\nCarrinho vazio.\n");
 		} else {
-			System.out.println("Produto     ||   Quantidade || Valor individual ||  Valor Total");
+			System.out.println("\n***********************************************************************");
+			System.out.println("Produto     ||   Quantidade || Valor individual ||  Valor Total\n");
 			for (Produto produtos : carrinhoUsuario) {
-				System.out.println(produtos.nome + "      ||      " + produtos.quantidade + "     ||      "
-						+ produtos.preco + "      ||      " + (produtos.preco * produtos.quantidade + " \n "));
+				double total = produtos.preco * produtos.quantidade;
+				System.out.printf(produtos.nome + "      ||      " + produtos.quantidade + "     ||      "
+						+ "R$ %.2f" + "      ||      " + " %.2f " + " \n ", produtos.preco, total);
 			}
-			System.out.println("\n\n");
 		}
 	}
 

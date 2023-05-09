@@ -2,7 +2,7 @@ package com.mentoria.sistema_compra;
 
 public class Estoque {
 
-	public  DBProdutos dbProdutos;
+	public DBProdutos dbProdutos;
 
 	public Estoque() {
 		this.dbProdutos = new DBProdutos();
@@ -19,37 +19,32 @@ public class Estoque {
 	public boolean removeQuantidade(Produto produtoParaRemover) {
 		for (Produto produto : dbProdutos.getProdutos()) {
 			if (produtoParaRemover.nome.equals(produto.nome)) {
-				if(produto.quantidade == 0) {
+				if (produto.quantidade == 0) {
 					System.out.println("Não temos em estoque. :(");
 					return false;
-				}
-				else if (produtoParaRemover.quantidade <= produto.quantidade) {
+				} else if (produtoParaRemover.quantidade <= produto.quantidade) {
 					produto.quantidade -= produtoParaRemover.quantidade;
 					return true;
 				} else {
 					System.out.println("Quantidade Insuficiente");
 					return false;
 				}
-			
+
 			}
 		}
 		return false;
 	}
 
-	public void localizaProduto(String nome) {
-		int retorno = 0;
+	public boolean localizaProduto(String nome) {
 		for (Produto produto : dbProdutos.getProdutos()) {
 			if (produto.nome.contains(nome)) {
-				if(retorno == 0) {
-					System.out.println("\nProduto(s) Localizado(s):\n\n");
-				}
-				System.out.println(produto.nome + " - R$" + produto.preco + " Quantidade: "
-						+ produto.quantidade + "\n");
-				retorno++;
+				System.out.println("\n*****************************************************");
+				System.out.println("Produto(s) Localizado(s):\n");
+				System.out
+						.printf(produto.nome + " - R$ " + "%.2f" + " Quantidade: " + produto.quantidade + "\n", produto.preco);
+				return true;
 			}
 		}
-		if (retorno == 0) {
-			System.out.println("Produto Não Localizado");
-		}
+		return false;
 	}
 }
