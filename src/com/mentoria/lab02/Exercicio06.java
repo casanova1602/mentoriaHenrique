@@ -3,23 +3,17 @@ package com.mentoria.lab02;
 public class Exercicio06 {
 
 	public static void converterCamelCase(String palavra) {
-		int[] pos = new int[palavra.length()];
-		int posArray = 0;
-		for (int i = 0; i < palavra.length(); i++) {
-			if (String.valueOf(palavra.charAt(i)).equals(String.valueOf(palavra.charAt(i)).toUpperCase())) {
-				pos[posArray] = i;
-				posArray++;
+		final int tamanho = palavra.length();
+		for (int i = 0; i < tamanho; i++) {
+			if (Character.isUpperCase(palavra.charAt(i))) {
+				if (i > 0) {
+					palavra = palavra.replace(String.valueOf(palavra.charAt(i)), " " + String.valueOf(palavra.charAt(i)));
+					i++;
+				}
 			}
-		}
 
-		for (int i = 0; i + 1 <= posArray; i++) {
-
-			if (i == posArray - 1) {
-				System.out.print(palavra.substring(pos[i], palavra.length()));
-			} else {
-				System.out.print(palavra.substring(pos[i], pos[i + 1]) + " ");
-			}
 		}
+		
+		System.out.println(palavra);
 	}
-
 }
